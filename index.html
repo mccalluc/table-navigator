@@ -1,27 +1,24 @@
 <!DOCTYPE html>
 <html>
-  <head><title>Table Navigator</title></head>
+  <head>
+    <title>Table Navigator</title>
+    <link href="style.css" rel="stylesheet" />
+  </head>
   <body>
     <p>
       Use the arrow keys to move between cells.
       (This means the left and right arrows no longer work to position the cursor within a cell.)
     </p>
     <p>Save this <a id="bookmarklet">bookmarklet</a> to have the same functionality on other pages.</p>
+    <p>It should work well on this simple table structure:</p>
+
     <table>
       <tr>
         <td><input size="3"></td>
         <td><input size="3"></td>
         <td><input size="3"></td>
-        <td><input size="3"></td>
       </tr>
       <tr>
-        <td><input size="3"></td>
-        <td><input size="3"></td>
-        <td><input size="3"></td>
-        <td><input size="3"></td>
-      </tr>
-      <tr>
-        <td><input size="3"></td>
         <td><input size="3"></td>
         <td><input size="3"></td>
         <td><input size="3"></td>
@@ -30,8 +27,40 @@
         <td><input size="3"></td>
         <td><input size="3"></td>
         <td><input size="3"></td>
-        <td><input size="3"></td>
       </tr>
+    </table>
+
+    <p>Still working on supporting ugly complex tables like this:</p>
+    <table>
+      <thead>
+        <tr>
+          <td><input size="3"></td>
+          <td><input size="3"></td>
+          <td><input size="3"></td>
+          <td><input size="3"></td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><input size="1"><input size="1"></td>
+          <td><div><input size="3"></div></td>
+          <td><input size="3"></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td><input size="3"></td>
+          <td><div><div><input size="3"></div></div></td>
+          <td><input size="3"></td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td><input size="3"></td>
+          <td><input size="3"></td>
+          <td><input size="3"></td>
+          <td></td>
+        </tr>        
+      </tfoot>
     </table>
     <script id="bookmarklet-src">
       // TODO: Factor this out as a bookmarklet.
