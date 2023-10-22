@@ -113,8 +113,13 @@
       })();
     </script>
     <script>
-      const js = document.getElementById('bookmarklet-src').textContent;
-      const minJs = js.replace(/\/\/.*/g, '').replace(/\s+/g, ' ');
+      const js = 'alert("table navigator enabled");' + document.getElementById('bookmarklet-src').textContent;
+      const minJs = (
+        js.replace(/\/\/.*/g, '')
+          .replace(/\s+/g, ' ')
+          .replace(/(\W)\s+(\S)/g, '$1$2')
+          .replace(/(\S)\s+(\W)/g, '$1$2')
+      );
       console.log(`minimized JS:\n${minJs}`);
       const url = 'javascript:' + encodeURIComponent(minJs)
       document.getElementById('bookmarklet').setAttribute('href', url);
