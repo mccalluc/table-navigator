@@ -1,0 +1,22 @@
+/* Styles to make table structure visible. */
+
+div, td {
+  padding: 2px;
+  background: #eee;
+  border: solid #bbb 1px;
+}
+
+div::before, tbody::before, thead::before, tfoot::before {
+  font-size: smaller;
+  font-family: monospace;
+  color: white;
+  background-color: darkgray;
+  padding: 2px 3px;
+  margin: 2px;
+  border-radius: 6px;
+}
+
+div::before { content: 'div'; }
+tbody::before { content: 'tbody'; }
+thead::before { content: 'thead'; }
+tfoot::before { content: 'tfoot'; }
