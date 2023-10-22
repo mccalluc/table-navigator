@@ -63,47 +63,48 @@
       </tfoot>
     </table>
     <script id="bookmarklet-src">
-      window.addEventListener('keydown', (e) => {
-        if (e.key.startsWith('Arrow')) {
-          let dx, dy;
-          switch (e.key) {
-            case 'ArrowUp': [dx, dy] = [0, -1]; break;
-            case 'ArrowLeft': [dx, dy] = [-1, 0]; break;
-            case 'ArrowRight': [dx, dy] = [1, 0]; break;
-            case 'ArrowDown': [dx, dy] = [0, 1]; break;
+      (function () {
+        function ancestor(target, node) {
+          while (node.tagName !== target) {
+            node = node.parentElement;
           }
-          
-          function ancestor(target, node) {
-            while (node.tagName !== target) {
-              node = node.parentElement;
-            }
-            return node;
-          }
-
-          function descendant(target, node) {
-            if (node.tagName === target) {
-              return node
-            } else {
-              for (child of node.children) {
-                const d = descendant(target, child)
-                if (d) {return d}
-              }
-            }
-            return null;
-          }
-
-          const td = ancestor('TD', document.activeElement);
-          const tr = ancestor('TR', td);
-          const table = ancestor('TABLE', tr);
-          console.log(`row ${tr.rowIndex}, col ${td.cellIndex}`, table);
-
-          const targetRow = table.rows[tr.rowIndex + dy];
-          const targetCell = targetRow.cells[td.cellIndex + dx];
-          console.log(targetCell);
-
-          descendant('INPUT', targetCell).focus();
+          return node;
         }
-      });
+
+        function descendant(target, node) {
+          if (node.tagName === target) {
+            return node
+          } else {
+            for (child of node.children) {
+              const d = descendant(target, child)
+              if (d) { return d }
+            }
+          }
+          return null;
+        }
+
+        window.addEventListener('keydown', (e) => {
+          if (e.key.startsWith('Arrow')) {
+            let dx, dy;
+            switch (e.key) {
+              case 'ArrowUp': [dx, dy] = [0, -1]; break;
+              case 'ArrowLeft': [dx, dy] = [-1, 0]; break;
+              case 'ArrowRight': [dx, dy] = [1, 0]; break;
+              case 'ArrowDown': [dx, dy] = [0, 1]; break;
+            }
+
+            const td = ancestor('TD', document.activeElement);
+            const tr = ancestor('TR', td);
+            const table = ancestor('TABLE', tr);
+            console.log(`row ${tr.rowIndex}, col ${td.cellIndex}`, table);
+
+            const targetRow = table.rows[tr.rowIndex + dy];
+            const targetCell = targetRow.cells[td.cellIndex + dx];
+            const input = descendant('INPUT', targetCell);
+            input.focus();
+          }
+        })
+      })();
     </script>
     <script>
       const js = document.getElementById('bookmarklet-src').textContent;
