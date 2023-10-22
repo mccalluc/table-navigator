@@ -30,7 +30,7 @@
       </tr>
     </table>
 
-    <p>Still working on supporting ugly complex tables like this:</p>
+    <p>... but I'm still working on supporting ugly complex tables like this:</p>
     <table>
       <thead>
         <tr>
@@ -63,9 +63,7 @@
       </tfoot>
     </table>
     <script id="bookmarklet-src">
-      // TODO: Factor this out as a bookmarklet.
       window.addEventListener('keydown', (e) => {
-        console.log(e.key);
         if (e.key.startsWith('Arrow')) {
           let dx, dy;
           switch (e.key) {
@@ -74,26 +72,43 @@
             case 'ArrowRight': [dx, dy] = [1, 0]; break;
             case 'ArrowDown': [dx, dy] = [0, 1]; break;
           }
-          // TODO: Walk up the tree: There might be wrapping elements.
-          // TODO: What about <tbody>?
-          const td = document.activeElement.parentElement;
-          const tr = td.parentElement;
-          const table = tr.parentElement;
-          console.log(`row ${tr.rowIndex}, col ${td.cellIndex}`);
+          
+          function ancestor(target, node) {
+            while (node.tagName !== target) {
+              node = node.parentElement;
+            }
+            return node;
+          }
 
-          const targetRowIndex = tr.rowIndex + dy;
-          const targetCellIndex = td.cellIndex + dx;
-          const targetCell = table.rows[targetRowIndex].cells[targetCellIndex];
-          // TODO: Walk down the tree to find <input>.
+          function descendant(target, node) {
+            if (node.tagName === target) {
+              return node
+            } else {
+              for (child of node.children) {
+                const d = descendant(target, child)
+                if (d) {return d}
+              }
+            }
+            return null;
+          }
+
+          const td = ancestor('TD', document.activeElement);
+          const tr = ancestor('TR', td);
+          const table = ancestor('TABLE', tr);
+          console.log(`row ${tr.rowIndex}, col ${td.cellIndex}`, table);
+
+          const targetRow = table.rows[tr.rowIndex + dy];
+          const targetCell = targetRow.cells[td.cellIndex + dx];
           console.log(targetCell);
-          targetCell.children[0].focus()
+
+          descendant('INPUT', targetCell).focus();
         }
       });
     </script>
     <script>
       const js = document.getElementById('bookmarklet-src').textContent;
       const minJs = js.replace(/\/\/.*/g, '').replace(/\s+/g, ' ');
-      console.log(minJs);
+      console.log(`minimized JS:\n${minJs}`);
       const url = 'javascript:' + encodeURIComponent(minJs)
       document.getElementById('bookmarklet').setAttribute('href', url);
     </script>

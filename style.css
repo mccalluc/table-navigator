@@ -6,9 +6,9 @@ div, td {
   border: solid #bbb 1px;
 }
 
-tr::before, div::before, tbody::before, thead::before, tfoot::before {
+div::before, tbody::before, thead::before, tfoot::before {
   font-size: smaller;
-  font-family: sans-serif;
+  font-family: monospace;
   color: white;
   background-color: darkgray;
   padding: 2px 3px;
@@ -16,7 +16,6 @@ tr::before, div::before, tbody::before, thead::before, tfoot::before {
   border-radius: 6px;
 }
 
-tr::before { content: 'tr'; }
 div::before { content: 'div'; }
 tbody::before { content: 'tbody'; }
 thead::before { content: 'thead'; }
